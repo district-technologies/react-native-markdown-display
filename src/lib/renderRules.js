@@ -13,6 +13,24 @@ import hasParents from './util/hasParents';
 
 import textStyleProps from './data/textStyleProps';
 
+function renderText(node, inheritedStyles, styles) {
+  // we trim new lines off the end of code blocks because the parser sends an extra one.
+  let {content} = node;
+
+  if (
+    typeof node.content === 'string' &&
+    node.content.charAt(node.content.length - 1) === '\n'
+  ) {
+    content = node.content.substring(0, node.content.length - 1);
+  }
+
+  return (
+    <Text key={node.key} style={[inheritedStyles, styles.code_block]}>
+      {content}
+    </Text>
+  );
+}
+
 const renderRules = {
   // when unknown elements are introduced, so it wont break
   unknown: (node, children, parent, styles) => null,
@@ -78,7 +96,7 @@ const renderRules = {
     </Text>
   ),
 
-  // Blockquotes
+  // Blockquote
   blockquote: (node, children, parent, styles) => (
     <View key={node.key} style={styles._VIEW_SAFE_blockquote}>
       {children}
@@ -98,7 +116,7 @@ const renderRules = {
   ),
   // this is a unique and quite annoying render rule because it has
   // child items that can be styled (the list icon and the list content)
-  // outside of the AST tree so there are some work arounds in the
+  // outside of the AST tree so there are some workaround in the
   // AST renderer specifically to get the styling right here
   list_item: (node, children, parent, styles, inheritedStyles = {}) => {
     // we need to grab any text specific stuff here that is applied on the list_item style
@@ -177,38 +195,10 @@ const renderRules = {
     </Text>
   ),
   code_block: (node, children, parent, styles, inheritedStyles = {}) => {
-    // we trim new lines off the end of code blocks because the parser sends an extra one.
-    let {content} = node;
-
-    if (
-      typeof node.content === 'string' &&
-      node.content.charAt(node.content.length - 1) === '\n'
-    ) {
-      content = node.content.substring(0, node.content.length - 1);
-    }
-
-    return (
-      <Text key={node.key} style={[inheritedStyles, styles.code_block]}>
-        {content}
-      </Text>
-    );
+    return renderText(node, inheritedStyles, styles);
   },
   fence: (node, children, parent, styles, inheritedStyles = {}) => {
-    // we trim new lines off the end of code blocks because the parser sends an extra one.
-    let {content} = node;
-
-    if (
-      typeof node.content === 'string' &&
-      node.content.charAt(node.content.length - 1) === '\n'
-    ) {
-      content = node.content.substring(0, node.content.length - 1);
-    }
-
-    return (
-      <Text key={node.key} style={[inheritedStyles, styles.fence]}>
-        {content}
-      </Text>
-    );
+    return renderText(node, inheritedStyles, styles);
   },
 
   // Tables

@@ -104,7 +104,7 @@ export default class AstRenderer {
     // applies them in order of priority parent (least) to child (most)
     // to allow styling global, then lower down things individually
 
-    // we have to handle list_item seperately here because they have some child
+    // we have to handle list_item separately here because they have some child
     // pseudo classes that need the additional style props from parents passed down to them
     if (children.length === 0 || node.type === 'list_item') {
       const styleObj = {};
@@ -169,7 +169,7 @@ export default class AstRenderer {
       children.push(this._topLevelMaxExceededItem);
     }
 
-    // render anythign else that has a normal signature
+    // render anything else that has a normal signature
 
     return renderFunction(node, children, parentNodes, this._style);
   };
