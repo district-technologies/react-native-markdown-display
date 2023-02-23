@@ -42,7 +42,7 @@ const getStyle = (mergeStyle, style) => {
   let useStyles = {};
 
   if (mergeStyle === true && style !== null) {
-    // make sure we get anything user defuned
+    // make sure we get anything user defined
     Object.keys(style).forEach((value) => {
       useStyles[value] = {
         ...StyleSheet.flatten(style[value]),
@@ -136,7 +136,7 @@ const Markdown = React.memo(
     rules = null,
     style = null,
     mergeStyle = true,
-    markdownit = MarkdownIt({
+    markdownIt = MarkdownIt({
       typographer: true,
     }),
     onLinkPress,
@@ -152,7 +152,7 @@ const Markdown = React.memo(
     defaultImageHandler = 'https://',
     debugPrintTree = false,
   }) => {
-    const momoizedRenderer = useMemo(
+    const memoizedRenderer = useMemo(
       () =>
         getRenderer(
           renderer,
@@ -180,9 +180,9 @@ const Markdown = React.memo(
       ],
     );
 
-    const momoizedParser = useMemo(() => markdownit, [markdownit]);
+    const memoizedParser = useMemo(() => markdownIt, [markdownIt]);
 
-    return parser(children, momoizedRenderer.render, momoizedParser);
+    return parser(children, memoizedRenderer.render, memoizedParser);
   },
 );
 
@@ -220,7 +220,7 @@ Markdown.propTypes = {
       );
     }
   },
-  markdownit: PropTypes.instanceOf(MarkdownIt),
+  markdownIt: PropTypes.instanceOf(MarkdownIt),
   style: PropTypes.any,
   mergeStyle: PropTypes.bool,
   allowedImageHandlers: PropTypes.arrayOf(PropTypes.string),
